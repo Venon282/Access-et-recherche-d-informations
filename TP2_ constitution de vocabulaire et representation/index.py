@@ -71,23 +71,37 @@ def DicoWithOccurence(source_folder,destination):
             json.dump(dico,file)
         
 def Ponderation(source_file,source_voc,destination):
-    for filename in os.listdir(source_file):
+    for filename in os.listdir(source_file):    #file browsing
         dico={}
-        with open(source_file+filename,'r') as file: 
+        with open(source_file+filename,'r') as file:    #get the content
             dico_j = json.load(file)
-        with open(source_voc+'vocabulaire.json','r') as file:
+        with open(source_voc+'vocabulaire.json','r') as file: #get the vocabulary
             voc_j = json.load(file)
-        for word in dico_j:
-            dico[word]=dico_j[word]*voc_j[word]
-        with open(destination+filename,'w') as file:
+        for word in dico_j: #for all the words
+            dico[word]=dico_j[word]*voc_j[word] #calcul td_idf
+        with open(destination+filename,'w') as file: #save
             json.dump(dico,file)
      
+#norme
+def Norme(file_path,destination):
+    dico={}
+    for filename in os.listdir(file_path): #for all file
+        with open(file_path+filename,'r') as file:  #get the content
+            dico_j = json.load(file)
+        res=0
+        for word in dico_j: #for all words
+            res = res+dico_j[word]**2
+        dico[filename]=math.sqrt(res) #norme calculation
+    with open(destination+"normes"+'.json','w') as file: #save
+        json.dump(dico,file)
 
 def Main():
     #AntiDico("../TP1 : Loi de zipf/collection_tokens/","common_words",'AntiDico apply/')
     #Vocabulary('AntiDico apply/','')
-    DicoWithOccurence('AntiDico apply/','Dico+tf/')
-    Ponderation('Dico+tf/','','Dico+tf_idf/')
+    #DicoWithOccurence('AntiDico apply/','Dico+tf/')
+    #Ponderation('Dico+tf/','','Dico+tf_idf/')
+    Norme('Dico+tf_idf/','')
+
     
 
 Main()

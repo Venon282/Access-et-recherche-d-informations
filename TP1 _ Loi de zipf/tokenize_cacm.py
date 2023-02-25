@@ -8,21 +8,25 @@ Created on Fri Jan 13 11:56:08 2023
 
 import os
 from nltk.tokenize import RegexpTokenizer
-#collection_tokens
 
-def Main(link):
+#recovers the tokens
+def GetTokens(link):
+    #File flow
     for filename in os.listdir(link):
+        
         file=open(link+filename,"r")
-        content=file.read().lower()
-        tokenizer=RegexpTokenizer('[a-z]\w+')
+        content=file.read().lower() #get the content + in lower case
+        tokenizer=RegexpTokenizer('[a-z]\w+') #regex
         words=tokenizer.tokenize(content)
         file.close()
+        
         file=open("collection_tokens/"+filename+".tok","w")
         file.truncate(0)
+        #Write all our words
         for word in words:
             file.write(word+"\n")
         file.close()
         
     
     
-Main("collection/")
+GetTokens("collection/")
